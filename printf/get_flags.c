@@ -30,3 +30,4 @@ void	get_flags(t_check *check)
 		check->str++;
 	}
 }
+
