@@ -1,87 +1,84 @@
 #include "main.h"
 
-/**
- * is_printable - Evaluates if a char is printable
- * @c: Char to be evaluated.
- *
- * Return: 1 if c is printable, 0 otherwise
- */
-int is_printable(char c)
+void	ft_putchar_fd(char c, int fd)
 {
-	if (c >= 32 && c < 127)
-		return (1);
-
-	return (0);
+	write(fd, &c, 1);
 }
 
-/**
- * append_hexa_code - Append ascci in hexadecimal code to buffer
- * @buffer: Array of chars.
- * @i: Index at which to start appending.
- * @ascii_code: ASSCI CODE.
- * Return: Always 3
- */
-int append_hexa_code(char ascii_code, char buffer[], int i)
+void	ft_putnchar_fd(char c, int n, int fd)
 {
-	char map_to[] = "0123456789ABCDEF";
-	/* The hexa format code is always 2 digits long */
-	if (ascii_code < 0)
-		ascii_code *= -1;
-
-	buffer[i++] = '\\';
-	buffer[i++] = 'x';
-
-	buffer[i++] = map_to[ascii_code / 16];
-	buffer[i] = map_to[ascii_code % 16];
-
-	return (3);
+	while (n-- > 0)
+		ft_putchar_fd(c, fd);
 }
 
-/**
- * is_digit - Verifies if a char is a digit
- * @c: Char to be evaluated
- *
- * Return: 1 if c is a digit, 0 otherwise
- */
-int is_digit(char c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
 
-	return (0);
+int	ft_isdigit(int c)
+{
+	return (c >= '0' && c <= '9');
 }
 
-/**
- * convert_size_number - Casts a number to the specified size
- * @num: Number to be casted.
- * @size: Number indicating the type to be casted.
- *
- * Return: Casted value of num
- */
-long int convert_size_number(long int num, int size)
-{
-	if (size == S_LONG)
-		return (num);
-	else if (size == S_SHORT)
-		return ((short)num);
 
-	return ((int)num);
+int	ft_atoi(const char *str)
+{
+	int	s;
+	int	c;
+
+	c = 0;
+	s = 1;
+	while ((*str >= 9 && *str <= 13) || *str == ' ')
+		str++;
+	if (*str == '+' || *str == '-')
+	{
+		if (*str == '-')
+			s = -s;
+		str ++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		c = c * 10 + *str - 48;
+		str++;
+	}
+	return (c * s);
 }
 
-/**
- * convert_size_unsgnd - Casts a number to the specified size
- * @num: Number to be casted
- * @size: Number indicating the type to be casted
- *
- * Return: Casted value of num
- */
-long int convert_size_unsgnd(unsigned long int num, int size)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	if (size == S_LONG)
-		return (num);
-	else if (size == S_SHORT)
-		return ((unsigned short)num);
+	size_t	i;
+	size_t	slen;
 
-	return ((unsigned int)num);
+	slen = ft_strlen(src);
+	i = 0;
+	if (slen + 1 < dstsize)
+		while (i <= slen)
+			dst[i++] = *src++;
+	else if (dstsize)
+	{
+		while (i < dstsize - 1)
+			dst[i++] = *src++;
+		dst[i] = 0;
+	}
+	return (slen);
 }
 
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*t;
+
+	t = malloc(count * size);
+	if (!t)
+		return (NULL);
+	ft_bzero(t, count * size);
+	return (t);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	char	*t;
+
+	t = malloc((ft_strlen(s1) + 1) * sizeof(char));
+	if (!t)
+		return (NULL);
+	ft_memcpy(t, s1, ft_strlen(s1));
+	t[ft_strlen(s1)] = 0;
+	return (t);
+}
